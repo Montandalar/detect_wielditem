@@ -10,8 +10,8 @@ end
 
 local META_KEY = 'detect_wielditem.prev'
 detect_wielditem = {}
-always_called_registered_callbacks = {}
-on_change_called_registered_callbacks = {}
+local always_called_registered_callbacks = {}
+local on_change_called_registered_callbacks = {}
 
 local function example_callback_always(player, item)
 	if item:get_name() == "default:dirt" then
@@ -34,11 +34,9 @@ local function update_player_meta(player, item)
 		return false
 	end
 
-	local meta_str = meta:get_string(META_KEY)
-	local item_str = item:to_string()
 	local prev = ItemStack(meta:get_string(META_KEY))
-	local changed = not prev.equals(item)
-	dbg()
+	local changed = not prev:equals(item)
+	--dbg()
 	if changed then
 		meta:set_string(META_KEY, item:to_string())
 		return true
@@ -92,10 +90,13 @@ local function register_while_wielding(callback)
 end
 detect_wielditem.register_while_wielding = register_while_wielding
 
+local function get_interval() return POLL_INTERVAL end
+detect_wielditem.get_interval = get_interval
+
 if REGISTER_EXAMPLE_CALLBACKS then
 	detect_wielditem.register_begin_wield(example_callback_on_changed)
 	detect_wielditem.register_while_wielding(example_callback_always)
 end
 
-minetest.log("action", "[detect_wielditem] Interval: " .. tostring(POLL_INTERVAL))
+minetest.log("info", "[detect_wielditem] Started with interval: " .. tostring(POLL_INTERVAL))
 minetest.after(POLL_INTERVAL, poll_wielditems)
