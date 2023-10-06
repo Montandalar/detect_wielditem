@@ -1,8 +1,8 @@
 local REGISTER_EXAMPLE_CALLBACKS = true
 
 local POLL_INTERVAL = 0.1
-do 
-	local got = minetest.settings:get("detect_wielditem.poll_interval") 
+do
+	local got = minetest.settings:get("detect_wielditem.poll_interval")
 	if got then
 		POLL_INTERVAL = tonumber(got)
 	end
@@ -12,8 +12,6 @@ local META_KEY = 'detect_wielditem.prev'
 detect_wielditem = {}
 always_called_registered_callbacks = {}
 on_change_called_registered_callbacks = {}
-
-local prev_items = {}
 
 local function example_callback_always(player, item)
 	if item:get_name() == "default:dirt" then
@@ -30,7 +28,6 @@ local function example_callback_on_changed(player, item)
 end
 
 local function update_player_meta(player, item)
-	local player_name = player:get_player_name()
 	local meta = player:get_meta()
 	if not meta:contains(META_KEY) then
 		meta:set_string(META_KEY, item:to_string())
@@ -80,6 +77,7 @@ end
 --! @param callback A function(player, item) to call when the player begins to
 --! wield a stack
 local function register_begin_wield(callback)
+	register_callback_preamble(callback)
 	table.insert(on_change_called_registered_callbacks, callback)
 end
 detect_wielditem.register_begin_wield = register_begin_wield
@@ -89,6 +87,7 @@ detect_wielditem.register_begin_wield = register_begin_wield
 --! player is wielding the stack. May be called at the same time as a
 --! begin_wield callback.
 local function register_while_wielding(callback)
+	register_callback_preamble(callback)
 	table.insert(always_called_registered_callbacks, callback)
 end
 detect_wielditem.register_while_wielding = register_while_wielding
