@@ -36,7 +36,6 @@ local function update_player_meta(player, item)
 
 	local prev = ItemStack(meta:get_string(META_KEY))
 	local changed = not prev:equals(item)
-	--dbg()
 	if changed then
 		meta:set_string(META_KEY, item:to_string())
 		return true
