@@ -1,0 +1,3 @@
+# The interval (in seconds) for how often the mod will poll the wielditems of
+# all the players and perform the callbacks.
+detect_wielditem.poll_interval (Poll interval) float 0.1 0.0 2
