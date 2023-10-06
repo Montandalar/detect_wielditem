@@ -1,4 +1,4 @@
-local REGISTER_EXAMPLE_CALLBACKS = true
+local REGISTER_EXAMPLE_CALLBACKS = false
 
 local POLL_INTERVAL = 0.1
 do
